@@ -1,4 +1,4 @@
-package com.permissions.application.dto;
+package com.permissions.domain.models.dto;
 
 import java.util.*;
 import lombok.*;

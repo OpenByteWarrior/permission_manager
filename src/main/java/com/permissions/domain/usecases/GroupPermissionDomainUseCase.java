@@ -1,39 +1,35 @@
-package com.permissions.domain.services;
+package com.permissions.domain.usecases;
 
+import com.permissions.domain.models.GroupPermissionGateway;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.permissions.application.dto.ResponseHttpDTO;
-import com.permissions.application.dto.GroupPermissionDTO;
-import com.permissions.domain.models.GroupPermission;
-import com.permissions.domain.models.Permission;
-import com.permissions.domain.repository.GroupPermissionRepository;
-import com.permissions.domain.repository.PermissionRepository;
+import com.permissions.domain.models.dto.ResponseHttpDTO;
+import com.permissions.domain.models.dto.GroupPermissionDTO;
+import com.permissions.infrastructure.driven_adapter.bd.entity.GroupPermission;
+import com.permissions.infrastructure.driven_adapter.bd.entity.Permission;
+import com.permissions.infrastructure.driven_adapter.bd.repository.PermissionRepository;
 
 @Service
-public class GroupPermissionDomainService {
-    private final GroupPermissionRepository groupPermissionRepository;
+@RequiredArgsConstructor
+public class GroupPermissionDomainUseCase {
+    private final GroupPermissionGateway groupPermissionGateway;
     private final PermissionRepository permissionRepository;
 
-    public GroupPermissionDomainService(GroupPermissionRepository groupPermissionRepository,
-            PermissionRepository permissionRepository) {
-        this.groupPermissionRepository = groupPermissionRepository;
-        this.permissionRepository = permissionRepository;
-    }
-
-    public ResponseEntity<ResponseHttpDTO<GroupPermission>> createGroupPermission(
+    public ResponseHttpDTO<GroupPermission> createGroupPermission(
             GroupPermissionDTO groupPermissionDTO) {
         try {
             Set<Permission> permissions = groupPermissionDTO.getPermissionIds().stream()
-                    .map(permissionId -> permissionRepository.findById(permissionId))
+                    .map(permissionRepository::findById)
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .collect(Collectors.toSet());
@@ -43,26 +39,23 @@ public class GroupPermissionDomainService {
             groupPermission.setDescription(groupPermissionDTO.getDescription());
             groupPermission.setPermissions(permissions);
 
-            GroupPermission savedGroupPermission = groupPermissionRepository.save(groupPermission);
+            GroupPermission savedGroupPermission = groupPermissionGateway.save(groupPermission);
 
-            ResponseHttpDTO<GroupPermission> response = new ResponseHttpDTO<>("200",
+            return new ResponseHttpDTO<>("200",
                     "Grupo de permisos creado correctamente", savedGroupPermission);
-            return new ResponseEntity<>(response, HttpStatus.OK);
 
         } catch (DataAccessException e) {
-            ResponseHttpDTO<GroupPermission> errorResponse = new ResponseHttpDTO<>("500",
+            return new ResponseHttpDTO<>("500",
                     "Error al guardar el grupo de permisos: " + e.getMessage(), null);
-            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
-            ResponseHttpDTO<GroupPermission> errorResponse = new ResponseHttpDTO<>("500",
+            return new ResponseHttpDTO<>("500",
                     "Ocurrió un error inesperado: " + e.getMessage(), null);
-            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     public ResponseEntity<ResponseHttpDTO<List<GroupPermission>>> getAllGroupsPermissions() {
         try {
-            List<GroupPermission> allGroupPermissions = groupPermissionRepository.findAll();
+            List<GroupPermission> allGroupPermissions = groupPermissionGateway.findAll();
 
             if (allGroupPermissions.isEmpty()) {
                 ResponseHttpDTO<List<GroupPermission>> emptyResponse = new ResponseHttpDTO<>("204",
@@ -87,7 +80,7 @@ public class GroupPermissionDomainService {
     public ResponseEntity<ResponseHttpDTO<GroupPermission>> getGroupPermissionById(UUID id) {
 
         try {
-            Optional<GroupPermission> groupPermission = groupPermissionRepository.findById(id);
+            Optional<GroupPermission> groupPermission = groupPermissionGateway.findById(id);
             if (groupPermission.isPresent()) {
                 ResponseHttpDTO<GroupPermission> response = new ResponseHttpDTO<>("200",
                         "Grupo de permisos obtenido correctamente", groupPermission.get());

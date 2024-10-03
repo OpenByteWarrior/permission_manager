@@ -1,8 +1,8 @@
-package com.permissions.domain.services;
+package com.permissions.domain.usecases;
 
-import com.permissions.application.dto.ResponseHttpDTO;
-import com.permissions.domain.models.Permission;
-import com.permissions.domain.repository.PermissionRepository;
+import com.permissions.domain.models.dto.ResponseHttpDTO;
+import com.permissions.infrastructure.driven_adapter.bd.entity.Permission;
+import com.permissions.infrastructure.driven_adapter.bd.repository.PermissionRepository;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -14,10 +14,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class PermissionDomainService {
+public class PermissionDomainUseCase {
     private final PermissionRepository permissionRepository;
 
-    public PermissionDomainService(PermissionRepository permissionRepository) {
+    public PermissionDomainUseCase(PermissionRepository permissionRepository) {
         this.permissionRepository = permissionRepository;
     }
 

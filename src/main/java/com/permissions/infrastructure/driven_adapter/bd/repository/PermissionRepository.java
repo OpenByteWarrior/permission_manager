@@ -1,6 +1,6 @@
-package com.permissions.domain.repository;
+package com.permissions.infrastructure.driven_adapter.bd.repository;
 
-import com.permissions.domain.models.Permission;
+import com.permissions.infrastructure.driven_adapter.bd.entity.Permission;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

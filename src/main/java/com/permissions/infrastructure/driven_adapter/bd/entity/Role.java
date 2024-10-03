@@ -1,7 +1,9 @@
-package com.permissions.domain.models;
+
+package com.permissions.infrastructure.driven_adapter.bd.entity;
+
+import java.util.UUID;
 
 import jakarta.persistence.*;
-import java.util.UUID;
 import java.util.Set;
 import lombok.*;
 
@@ -10,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 
 @Entity
-public class Permission {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,6 +21,6 @@ public class Permission {
     private String name;
     private String description;
 
-    @ManyToMany(mappedBy = "permissions")
+    @ManyToMany(mappedBy = "roles")
     private Set<GroupPermission> groupPermissions;
 }

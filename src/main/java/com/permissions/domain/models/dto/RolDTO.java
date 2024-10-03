@@ -1,4 +1,4 @@
-package com.permissions.application.dto;
+package com.permissions.domain.models.dto;
 
 import java.util.*;
 import lombok.*;
@@ -11,5 +11,5 @@ import lombok.*;
 public class RolDTO {
     private UUID id;
     private String name;
-    private List<GroupPermissionDTO> groups_permissions;
+    private List<GroupPermissionDTO> groupPermissions;
 }

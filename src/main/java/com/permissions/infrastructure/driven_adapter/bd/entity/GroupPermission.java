@@ -1,4 +1,4 @@
-package com.permissions.domain.models;
+package com.permissions.infrastructure.driven_adapter.bd.entity;
 
 import jakarta.persistence.*;
 

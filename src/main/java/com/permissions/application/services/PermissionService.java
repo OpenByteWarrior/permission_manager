@@ -1,9 +1,9 @@
 package com.permissions.application.services;
 
-import com.permissions.application.dto.ResponseHttpDTO;
+import com.permissions.domain.models.dto.ResponseHttpDTO;
 import com.permissions.application.ports.input.PermissionUseCase;
-import com.permissions.domain.models.Permission;
-import com.permissions.domain.services.PermissionDomainService;
+import com.permissions.infrastructure.driven_adapter.bd.entity.Permission;
+import com.permissions.domain.usecases.PermissionDomainUseCase;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,9 +13,9 @@ import java.util.UUID;
 
 @Service
 public class PermissionService implements PermissionUseCase {
-    private final PermissionDomainService domainService;
+    private final PermissionDomainUseCase domainService;
 
-    public PermissionService(PermissionDomainService domainService) {
+    public PermissionService(PermissionDomainUseCase domainService) {
         this.domainService = domainService;
     }
 

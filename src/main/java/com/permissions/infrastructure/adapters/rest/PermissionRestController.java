@@ -1,8 +1,8 @@
 package com.permissions.infrastructure.adapters.rest;
 
-import com.permissions.application.dto.ResponseHttpDTO;
+import com.permissions.domain.models.dto.ResponseHttpDTO;
 import com.permissions.application.ports.input.PermissionUseCase;
-import com.permissions.domain.models.Permission;
+import com.permissions.infrastructure.driven_adapter.bd.entity.Permission;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

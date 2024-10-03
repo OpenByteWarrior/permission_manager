@@ -1,7 +1,7 @@
 package com.permissions.application.ports.input;
 
-import com.permissions.application.dto.ResponseHttpDTO;
-import com.permissions.domain.models.Permission;
+import com.permissions.domain.models.dto.ResponseHttpDTO;
+import com.permissions.infrastructure.driven_adapter.bd.entity.Permission;
 
 import java.util.List;
 import java.util.UUID;
