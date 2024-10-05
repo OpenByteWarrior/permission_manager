@@ -1,4 +1,4 @@
-package com.permissions.infrastructure.adapters.rest;
+package com.permissions.infrastructure.rest;
 
 import com.permissions.domain.usecases.GroupPermissionDomainUseCase;
 import java.util.List;
@@ -22,19 +22,19 @@ public class GroupPermissionRestController {
 
   @PostMapping
   public ResponseEntity<ResponseHttpDTO<GroupPermission>> createGroupPermission(
-      @Valid @RequestBody GroupPermissionDTO groupPermissionDTO) {
+      @RequestBody GroupPermissionDTO groupPermissionDTO) {
     return new ResponseEntity<>(
         groupPermissionDomainUseCase.createGroupPermission(groupPermissionDTO), HttpStatus.CREATED);
   }
 
   @GetMapping
   public ResponseEntity<ResponseHttpDTO<List<GroupPermission>>> getAllGroupsPermissions() {
-    return groupPermissionDomainUseCase.getAllGroupsPermissions();
+    return new ResponseEntity<>(groupPermissionDomainUseCase.getAllGroupsPermissions(), HttpStatus.OK);
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<ResponseHttpDTO<GroupPermission>> getGroupPermissionById(
       @PathVariable("id") UUID id) {
-    return groupPermissionDomainUseCase.getGroupPermissionById(id);
+    return new ResponseEntity<>(groupPermissionDomainUseCase.getGroupPermissionById(id), HttpStatus.OK);
   }
 }

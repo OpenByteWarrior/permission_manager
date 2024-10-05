@@ -1,4 +1,4 @@
-package com.permissions.infrastructure.adapters.rest;
+package com.permissions.infrastructure.rest;
 import org.springframework.web.bind.annotation.*;
 @RestController
 public class HomeRestController {
