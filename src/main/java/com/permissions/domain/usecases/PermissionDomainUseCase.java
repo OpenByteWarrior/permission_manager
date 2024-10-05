@@ -3,7 +3,6 @@ package com.permissions.domain.usecases;
 import com.permissions.domain.models.PermissionGateway;
 import com.permissions.domain.models.dto.ResponseHttpDTO;
 import com.permissions.infrastructure.driven_adapter.bd.entity.Permission;
-import com.permissions.infrastructure.driven_adapter.bd.repository.PermissionRepository;
 
 import lombok.RequiredArgsConstructor;
 
