@@ -20,6 +20,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
 	implementation 'org.projectlombok:lombok:1.18.30'
 	annotationProcessor 'org.projectlombok:lombok:1.18.30'
 	implementation 'org.mapstruct:mapstruct:1.6.2'
@@ -29,6 +30,48 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+task upContainer {
+    doLast {
+        def containerName = "dg-postgress"
+
+        try {
+            println "Verificando estado de Podman machine..."
+            exec {
+                commandLine "podman", "machine", "start"
+                ignoreExitValue = true
+            }
+            def containerStatus = new ByteArrayOutputStream()
+            exec {
+                commandLine "podman", "ps", "--quiet", "--filter", "name=${containerName}"
+                standardOutput = containerStatus
+                ignoreExitValue = true
+            }
+
+            if (containerStatus.toString().trim().isEmpty()) {
+                println "El contenedor ${containerName} no está corriendo. Iniciándolo..."
+                exec {
+                    commandLine "podman", "start", containerName
+                }
+            } else {
+                println "El contenedor ${containerName} ya está corriendo."
+            }
+        } catch (Exception e) {
+            println "Error ejecutando comandos Podman: ${e.message}"
+            throw e
+        }
+        println "Termino la tarea upContainer"
+    }
+}
+
+task runApp(type: JavaExec) {
+    dependsOn upContainer
+    main = 'com.permissions.PermissionsApplication'
+    classpath = sourceSets.main.runtimeClasspath
+    args = []
+    jvmArgs = ['-Duser.timezone=UTC']
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
