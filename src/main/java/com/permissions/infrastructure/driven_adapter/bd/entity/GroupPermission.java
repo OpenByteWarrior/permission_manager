@@ -26,5 +26,5 @@ public class GroupPermission {
 
     @ManyToMany
     @JoinTable(name = "role_group_permission_relations", joinColumns = @JoinColumn(name = "group_permission_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    private Set<Roles> roles;
 }

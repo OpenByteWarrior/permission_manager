@@ -9,4 +9,5 @@ public interface PermissionGateway {
     Permission save(Permission permission);
     List<Permission> findAll();
     Optional<Permission> findById(UUID id);
+    void deleteById(UUID id);
 }

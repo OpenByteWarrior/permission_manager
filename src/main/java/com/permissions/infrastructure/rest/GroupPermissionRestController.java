@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.permissions.domain.models.dto.GroupPermissionBodyDTO;
 import com.permissions.domain.models.dto.GroupPermissionDTO;
 import com.permissions.domain.models.dto.ResponseHttpDTO;
 import com.permissions.infrastructure.driven_adapter.bd.entity.GroupPermission;
@@ -21,20 +22,31 @@ public class GroupPermissionRestController {
   private final GroupPermissionDomainUseCase groupPermissionDomainUseCase;
 
   @PostMapping
-  public ResponseEntity<ResponseHttpDTO<GroupPermission>> createGroupPermission(
-      @RequestBody GroupPermissionDTO groupPermissionDTO) {
+  public ResponseEntity<ResponseHttpDTO<GroupPermissionDTO>> createGroupPermission(
+      @RequestBody GroupPermissionBodyDTO groupPermissionBodyDTO) {
     return new ResponseEntity<>(
-        groupPermissionDomainUseCase.createGroupPermission(groupPermissionDTO), HttpStatus.CREATED);
+        groupPermissionDomainUseCase.createGroupPermission(groupPermissionBodyDTO), HttpStatus.CREATED);
   }
 
   @GetMapping
-  public ResponseEntity<ResponseHttpDTO<List<GroupPermission>>> getAllGroupsPermissions() {
+  public ResponseEntity<ResponseHttpDTO<List<GroupPermissionDTO>>> getAllGroupsPermissions() {
     return new ResponseEntity<>(groupPermissionDomainUseCase.getAllGroupsPermissions(), HttpStatus.OK);
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<ResponseHttpDTO<GroupPermission>> getGroupPermissionById(
+  public ResponseEntity<ResponseHttpDTO<GroupPermissionDTO>> getGroupPermissionById(
       @PathVariable("id") UUID id) {
     return new ResponseEntity<>(groupPermissionDomainUseCase.getGroupPermissionById(id), HttpStatus.OK);
+  }
+  @DeleteMapping("/{id}")
+  public ResponseEntity<ResponseHttpDTO<GroupPermission>> deleteGroupPermissionById(
+      @PathVariable("id") UUID id) {
+    return new ResponseEntity<>(groupPermissionDomainUseCase.deleteGroupPermissionById(id), HttpStatus.OK);
+  }
+  @PutMapping("/{id}")
+  public ResponseEntity<ResponseHttpDTO<GroupPermissionDTO>> updateGroupPermission(
+      @PathVariable("id") UUID id, @RequestBody GroupPermissionDTO groupPermissionDTO) {
+    return new ResponseEntity<>(
+        groupPermissionDomainUseCase.updateGroupPermission(id, groupPermissionDTO), HttpStatus.OK);
   }
 }

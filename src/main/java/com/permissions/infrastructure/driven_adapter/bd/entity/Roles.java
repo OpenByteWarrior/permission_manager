@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 
 @Entity
-public class Role {
+public class Roles {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
