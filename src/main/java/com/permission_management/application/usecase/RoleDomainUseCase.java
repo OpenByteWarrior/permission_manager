@@ -1,11 +1,9 @@
 package com.permission_management.application.usecase;
 
+import com.permission_management.application.dto.*;
 import com.permission_management.domain.models.GroupPermissionGateway;
 import com.permission_management.domain.models.PermissionGateway;
 import com.permission_management.domain.models.RoleGateway;
-import com.permission_management.domain.models.dto.ResponseHttpDTO;
-import com.permission_management.domain.models.dto.RoleBodyDTO;
-import com.permission_management.domain.models.dto.RoleDTO;
 import com.permission_management.infrastructure.persistence.entity.GroupPermission;
 import com.permission_management.infrastructure.persistence.entity.Permission;
 import com.permission_management.infrastructure.persistence.entity.Role;
@@ -26,7 +24,6 @@ public class RoleDomainUseCase {
 
     private final RoleGateway roleGateway;
     private final GroupPermissionGateway groupPermissionGateway;
-    private final PermissionGateway permissionGateway;
     private final ModelMapper modelMapper;
 
     public ResponseHttpDTO<RoleDTO> createRole(RoleBodyDTO roleBodyDTO) {
@@ -36,16 +33,8 @@ public class RoleDomainUseCase {
                     .map(groupPermissionGateway::findById)
                     .filter(Optional::isPresent)
                     .map(Optional::get).collect(Collectors.toSet());
-
-            Set<Permission> permissions =  roleBodyDTO.getPermissionIDs()
-                    .stream()
-                    .map(permissionGateway::findById)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get).collect(Collectors.toSet());
-
             Role role = modelMapper.map(roleBodyDTO, Role.class);
             role.setGroupPermissions(groupPermissions);
-            role.setPermissions(permissions);
 
             roleGateway.save(role);
 

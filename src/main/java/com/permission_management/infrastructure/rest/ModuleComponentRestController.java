@@ -1,7 +1,7 @@
 package com.permission_management.infrastructure.rest;
 
-import com.permission_management.domain.models.dto.ModuleComponentDTO;
-import com.permission_management.domain.models.dto.ResponseHttpDTO;
+import com.permission_management.application.dto.ModuleComponentDTO;
+import com.permission_management.application.dto.ResponseHttpDTO;
 import com.permission_management.application.usecase.ModuleComponentDomainUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

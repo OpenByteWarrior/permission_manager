@@ -1,4 +1,4 @@
-package com.permission_management.domain.models.dto;
+package com.permission_management.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

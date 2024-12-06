@@ -24,6 +24,4 @@ public class Permission implements Resource {
     @ManyToMany(mappedBy = "permissions")
     private Set<GroupPermission> groupPermissions;
 
-    @ManyToMany(mappedBy = "permissions")
-    private Set<Role> roles;
 }

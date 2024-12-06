@@ -2,7 +2,7 @@ package com.permission_management.application.usecase;
 
 import com.permission_management.application.service.ResourceAssignmentService;
 import com.permission_management.domain.models.*;
-import com.permission_management.domain.models.dto.*;
+import com.permission_management.application.dto.*;
 import com.permission_management.infrastructure.persistence.entity.Permission;
 
 import lombok.RequiredArgsConstructor;
@@ -104,13 +104,4 @@ public class PermissionDomainUseCase {
     public ResponseHttpDTO<GroupPermissionDTO> removePermissionGroup(PermissionAssignAndRemoveBodyGroupDTO body) {
         return resourceAssignmentService.removeResource(body.getIdGroup(), body.getPermissionIds(), groupPermissionGateway, permissionGateway, GroupPermissionDTO.class, "grupo de permisos");
     }
-
-    public ResponseHttpDTO<RoleDTO> assignPermissionRole(PermissionAssignAndRemoveBodyRoleDTO body) {
-        return resourceAssignmentService.assignResource(body.getIdRole(), body.getPermissionIds(), roleGateway, permissionGateway, RoleDTO.class, "rol");
-    }
-
-    public ResponseHttpDTO<RoleDTO> removePermissionRole(PermissionAssignAndRemoveBodyRoleDTO body) {
-        return resourceAssignmentService.removeResource(body.getIdRole(), body.getPermissionIds(), roleGateway, permissionGateway, RoleDTO.class, "rol");
-    }
-
 }

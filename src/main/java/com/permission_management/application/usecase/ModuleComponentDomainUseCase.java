@@ -2,8 +2,8 @@ package com.permission_management.application.usecase;
 
 
 import com.permission_management.domain.models.ModuleComponentGateway;
-import com.permission_management.domain.models.dto.ModuleComponentDTO;
-import com.permission_management.domain.models.dto.ResponseHttpDTO;
+import com.permission_management.application.dto.ModuleComponentDTO;
+import com.permission_management.application.dto.ResponseHttpDTO;
 import com.permission_management.infrastructure.persistence.entity.ModuleComponent;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

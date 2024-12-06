@@ -4,6 +4,6 @@ import org.springframework.web.bind.annotation.*;
 public class HomeRestController {
     @GetMapping("/")
     public String home() {
-        return "Bienvenido a la API de Permisos";
+        return "Bienvenido a la API de Gestion de Permisos";
     }
 }

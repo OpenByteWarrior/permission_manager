@@ -9,9 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.permission_management.domain.models.dto.GroupPermissionBodyDTO;
-import com.permission_management.domain.models.dto.GroupPermissionDTO;
-import com.permission_management.domain.models.dto.ResponseHttpDTO;
+import com.permission_management.application.dto.GroupPermissionBodyDTO;
+import com.permission_management.application.dto.GroupPermissionDTO;
+import com.permission_management.application.dto.ResponseHttpDTO;
 
 @RestController
 @RequestMapping("/group_permissions")

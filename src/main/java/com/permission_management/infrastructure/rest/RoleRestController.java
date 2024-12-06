@@ -1,8 +1,8 @@
 package com.permission_management.infrastructure.rest;
 
-import com.permission_management.domain.models.dto.ResponseHttpDTO;
-import com.permission_management.domain.models.dto.RoleBodyDTO;
-import com.permission_management.domain.models.dto.RoleDTO;
+import com.permission_management.application.dto.ResponseHttpDTO;
+import com.permission_management.application.dto.RoleBodyDTO;
+import com.permission_management.application.dto.RoleDTO;
 import com.permission_management.application.usecase.RoleDomainUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

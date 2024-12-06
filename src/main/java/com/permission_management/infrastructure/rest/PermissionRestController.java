@@ -1,9 +1,9 @@
 package com.permission_management.infrastructure.rest;
 
-import com.permission_management.domain.models.dto.GroupPermissionDTO;
-import com.permission_management.domain.models.dto.PermissionAssignAndRemoveBodyGroupDTO;
-import com.permission_management.domain.models.dto.PermissionDTO;
-import com.permission_management.domain.models.dto.ResponseHttpDTO;
+import com.permission_management.application.dto.GroupPermissionDTO;
+import com.permission_management.application.dto.PermissionAssignAndRemoveBodyGroupDTO;
+import com.permission_management.application.dto.PermissionDTO;
+import com.permission_management.application.dto.ResponseHttpDTO;
 import com.permission_management.application.usecase.PermissionDomainUseCase;
 import com.permission_management.infrastructure.persistence.entity.Permission;
 import org.springframework.http.HttpStatus;

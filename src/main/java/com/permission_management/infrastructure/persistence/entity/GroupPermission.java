@@ -1,5 +1,6 @@
 package com.permission_management.infrastructure.persistence.entity;
 
+import com.permission_management.domain.models.Resource;
 import com.permission_management.domain.models.ResourceContainer;
 import jakarta.persistence.*;
 
@@ -14,7 +15,7 @@ import lombok.*;
 @NoArgsConstructor
 
 @Entity
-public class GroupPermission implements ResourceContainer<Permission>{
+public class GroupPermission implements ResourceContainer<Permission> , Resource {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

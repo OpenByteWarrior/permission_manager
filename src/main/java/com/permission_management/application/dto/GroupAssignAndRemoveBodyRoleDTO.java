@@ -12,10 +12,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class RoleBodyDTO {
-    UUID id;
-    String name;
-    String description;
-    Set<UUID> groupPermissionIDs;
+public class GroupAssignAndRemoveBodyRoleDTO {
+    private UUID idRole;
+    private Set<UUID> groupPermissionIds;
 }
