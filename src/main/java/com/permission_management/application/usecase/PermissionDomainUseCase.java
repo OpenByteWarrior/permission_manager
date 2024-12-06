@@ -1,12 +1,10 @@
 package com.permission_management.application.usecase;
 
-import com.permission_management.application.service.ResourceAssignmentService;
 import com.permission_management.domain.models.*;
 import com.permission_management.application.dto.*;
 import com.permission_management.infrastructure.persistence.entity.GroupPermission;
 import com.permission_management.infrastructure.persistence.entity.Permission;
 
-import com.permission_management.infrastructure.persistence.entity.Role;
 import lombok.RequiredArgsConstructor;
 
 import org.modelmapper.ModelMapper;

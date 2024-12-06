@@ -2,10 +2,8 @@ package com.permission_management.application.usecase;
 
 import com.permission_management.application.dto.*;
 import com.permission_management.domain.models.GroupPermissionGateway;
-import com.permission_management.domain.models.PermissionGateway;
 import com.permission_management.domain.models.RoleGateway;
 import com.permission_management.infrastructure.persistence.entity.GroupPermission;
-import com.permission_management.infrastructure.persistence.entity.Permission;
 import com.permission_management.infrastructure.persistence.entity.Role;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

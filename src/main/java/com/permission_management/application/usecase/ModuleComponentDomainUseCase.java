@@ -137,6 +137,7 @@ public class ModuleComponentDomainUseCase {
             return new ResponseHttpDTO<>("500", "Ocurrió un error inesperado: " + e.getMessage(), null);
         }
     }
+
     public ResponseHttpDTO<GroupPermissionDTO> removeComponentToGroup(AssignAndRemoveBodyDTO body) {
         try {
             GroupPermission groupPermission = groupPermissionGateway.findById(body.getIdContainer())

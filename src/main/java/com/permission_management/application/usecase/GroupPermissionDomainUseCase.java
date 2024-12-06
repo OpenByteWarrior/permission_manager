@@ -1,7 +1,6 @@
 package com.permission_management.application.usecase;
 
 import com.permission_management.application.dto.*;
-import com.permission_management.application.service.ResourceAssignmentService;
 import com.permission_management.domain.models.GroupPermissionGateway;
 
 import java.util.List;
@@ -10,10 +9,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.permission_management.domain.models.ModuleComponentGateway;
 import com.permission_management.domain.models.PermissionGateway;
 import com.permission_management.domain.models.RoleGateway;
-import com.permission_management.infrastructure.persistence.entity.ModuleComponent;
 import com.permission_management.infrastructure.persistence.entity.Role;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -28,9 +25,7 @@ import com.permission_management.infrastructure.persistence.entity.Permission;
 public class GroupPermissionDomainUseCase {
     private final GroupPermissionGateway groupPermissionGateway;
     private final PermissionGateway permissionGateway;
-    private final ModuleComponentGateway moduleComponentGateway;
     private final RoleGateway roleGateway;
-    private final ResourceAssignmentService resourceAssignmentService;
     private final ModelMapper modelMapper;
 
     public ResponseHttpDTO<GroupPermissionDTO> createGroupPermission(GroupPermissionBodyDTO groupPermissionBodyDTO) {
