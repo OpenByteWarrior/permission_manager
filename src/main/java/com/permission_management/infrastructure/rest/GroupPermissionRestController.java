@@ -1,5 +1,6 @@
 package com.permission_management.infrastructure.rest;
 
+import com.permission_management.application.dto.*;
 import com.permission_management.application.usecase.GroupPermissionDomainUseCase;
 import java.util.List;
 import java.util.UUID;
@@ -8,10 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.permission_management.application.dto.GroupPermissionBodyDTO;
-import com.permission_management.application.dto.GroupPermissionDTO;
-import com.permission_management.application.dto.ResponseHttpDTO;
 
 @RestController
 @RequestMapping("/group_permissions")
@@ -47,5 +44,13 @@ public class GroupPermissionRestController {
       @PathVariable("id") UUID id, @RequestBody GroupPermissionDTO groupPermissionDTO) {
     return new ResponseEntity<>(
         groupPermissionDomainUseCase.updateGroupPermissionById(id, groupPermissionDTO), HttpStatus.OK);
+  }
+  @PutMapping("/assign")
+  public ResponseEntity<ResponseHttpDTO<RoleDTO>> assignGroupPermissionToRole(@RequestBody AssignAndRemoveBodyDTO body) {
+    return new ResponseEntity<>(groupPermissionDomainUseCase.assignGroupPermissionToRole(body), HttpStatus.OK);
+  }
+  @DeleteMapping("/remove")
+  public ResponseEntity<ResponseHttpDTO<RoleDTO>> removeGroupPermissionToRole( @RequestBody AssignAndRemoveBodyDTO body) {
+    return new ResponseEntity<>(groupPermissionDomainUseCase.removeGroupPermissionToRole(body), HttpStatus.OK);
   }
 }

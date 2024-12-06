@@ -86,7 +86,7 @@ public class RoleDomainUseCase {
         try {
             return roleGateway.findById(id).map(role -> {
                 roleGateway.deleteById(id);
-                return new ResponseHttpDTO<String>("200", "Rol eliminado correctamente", null);
+                return new ResponseHttpDTO<String>("200", "Rol eliminado correctamente", "OK");
             }).orElseGet(() -> new ResponseHttpDTO<>("404", "El rol no existe", null));
         } catch (DataAccessException e) {
             return new ResponseHttpDTO<>("500", "Error al eliminar el rol: " + e.getMessage(), null);

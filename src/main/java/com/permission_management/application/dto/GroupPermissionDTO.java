@@ -14,4 +14,5 @@ public class GroupPermissionDTO {
     private String name;
     private String description;
     private Set<PermissionDTO> permissions;
+    private Set<ModuleComponentDTO> components;
 }

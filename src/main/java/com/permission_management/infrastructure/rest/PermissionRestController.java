@@ -1,9 +1,6 @@
 package com.permission_management.infrastructure.rest;
 
-import com.permission_management.application.dto.GroupPermissionDTO;
-import com.permission_management.application.dto.PermissionAssignAndRemoveBodyGroupDTO;
-import com.permission_management.application.dto.PermissionDTO;
-import com.permission_management.application.dto.ResponseHttpDTO;
+import com.permission_management.application.dto.*;
 import com.permission_management.application.usecase.PermissionDomainUseCase;
 import com.permission_management.infrastructure.persistence.entity.Permission;
 import org.springframework.http.HttpStatus;
@@ -48,11 +45,11 @@ public class PermissionRestController {
     }
 
     @PutMapping("/assign")
-    public ResponseEntity<ResponseHttpDTO<GroupPermissionDTO>> assignPermissionGroup( @RequestBody PermissionAssignAndRemoveBodyGroupDTO body) {
-        return new ResponseEntity<>(permissionDomainUseCase.assignPermissionGroup(body), HttpStatus.OK);
+    public ResponseEntity<ResponseHttpDTO<GroupPermissionDTO>> assignPermissionGroup( @RequestBody AssignAndRemoveBodyDTO body) {
+        return new ResponseEntity<>(permissionDomainUseCase.assignPermissionToGroup(body), HttpStatus.OK);
     }
     @DeleteMapping("/remove")
-    public ResponseEntity<ResponseHttpDTO<GroupPermissionDTO>> removePermissionGroup( @RequestBody PermissionAssignAndRemoveBodyGroupDTO body) {
-        return new ResponseEntity<>(permissionDomainUseCase.removePermissionGroup(body), HttpStatus.OK);
+    public ResponseEntity<ResponseHttpDTO<GroupPermissionDTO>> removePermissionGroup( @RequestBody AssignAndRemoveBodyDTO body) {
+        return new ResponseEntity<>(permissionDomainUseCase.removePermissionToGroup(body), HttpStatus.OK);
     }
 }

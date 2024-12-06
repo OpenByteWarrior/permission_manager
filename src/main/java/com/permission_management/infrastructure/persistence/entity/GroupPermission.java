@@ -15,7 +15,7 @@ import lombok.*;
 @NoArgsConstructor
 
 @Entity
-public class GroupPermission implements ResourceContainer<Permission> , Resource {
+public class GroupPermission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,9 +24,11 @@ public class GroupPermission implements ResourceContainer<Permission> , Resource
     private String name;
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "module_component_id")
-    private ModuleComponent moduleComponent;
+    @ManyToMany
+    @JoinTable(name="component_group_permission",
+            joinColumns = @JoinColumn(name = "group_permission_id"),
+            inverseJoinColumns = @JoinColumn(name = "component_id"))
+    private Set<ModuleComponent> components;
 
     @ManyToMany
     @JoinTable(name = "permission_group_permission",
@@ -34,18 +36,6 @@ public class GroupPermission implements ResourceContainer<Permission> , Resource
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private Set<Permission> permissions;
 
-    @ManyToMany
-    @JoinTable(name = "roles_group_permission",
-            joinColumns = @JoinColumn(name = "group_permission_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @ManyToMany(mappedBy = "groupPermissions")
     private Set<Role> roles;
-
-    @Override
-    public Set<Permission> getResources() {
-        return permissions;
-    }
-    @Override
-    public void setResources(Set<Permission> resources) {
-        this.permissions = resources;
-    }
 }

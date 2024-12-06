@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 
 @Entity
-public class Permission implements Resource {
+public class Permission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

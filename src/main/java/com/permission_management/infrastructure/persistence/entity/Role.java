@@ -17,7 +17,7 @@ import lombok.*;
 @NoArgsConstructor
 
 @Entity
-public class Role implements ResourceContainer<GroupPermission> {
+public class Role{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,16 +26,9 @@ public class Role implements ResourceContainer<GroupPermission> {
     private String name;
     private String description;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany
+    @JoinTable(name = "group_permission_roles",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "group_permission_id"))
     private Set<GroupPermission> groupPermissions;
-
-    @Override
-    public Set<GroupPermission> getResources() {
-        return groupPermissions;
-    }
-    @Override
-    public void setResources(Set<GroupPermission> resources) {
-        this.groupPermissions = resources;
-    }
-
 }

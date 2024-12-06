@@ -1,10 +1,7 @@
 package com.permission_management.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 import java.util.UUID;
@@ -25,6 +22,7 @@ public class ModuleComponent {
     private String name;
     private String description;
 
-    @OneToMany(mappedBy = "moduleComponent")
+    @ManyToMany(mappedBy = "components")
     private Set<GroupPermission> groupPermissions;
+
 }

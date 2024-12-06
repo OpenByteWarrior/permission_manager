@@ -14,6 +14,7 @@ import com.permission_management.domain.models.ModuleComponentGateway;
 import com.permission_management.domain.models.PermissionGateway;
 import com.permission_management.domain.models.RoleGateway;
 import com.permission_management.infrastructure.persistence.entity.ModuleComponent;
+import com.permission_management.infrastructure.persistence.entity.Role;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataAccessException;
@@ -121,62 +122,70 @@ public class GroupPermissionDomainUseCase {
                     "Ocurrió un error inesperado: " + e.getMessage(), null);
         }
     }
-    public ResponseHttpDTO<GroupPermissionDTO> assignComponentToGroupPermission(UUID groupPermissionId, UUID moduleComponentId) {
-        try {
-            GroupPermission groupPermission = groupPermissionGateway.findById(groupPermissionId)
-                    .orElseThrow(() -> new IllegalArgumentException("El grupo de permisos no existe"));
 
-            if (groupPermission.getModuleComponent() != null) {
-                return new ResponseHttpDTO<>("400", "El grupo de permisos ya tiene un componente de módulo asignado", null);
+    public ResponseHttpDTO<RoleDTO> assignGroupPermissionToRole(AssignAndRemoveBodyDTO body) {
+            try {
+                Role role = roleGateway.findById(body.getIdContainer())
+                        .orElseThrow(() -> new IllegalArgumentException("El rol no existe"));
+
+                Set<GroupPermission> resources = body.getResourcesIds().stream()
+                        .map(id -> groupPermissionGateway.findById(id)
+                                .orElseThrow(() -> new IllegalArgumentException("El grupo de permisos con el ID " + id + " no existe")))
+                        .collect(Collectors.toSet());
+
+                Set<GroupPermission> alreadyAssignedResources = resources.stream()
+                        .filter(role.getGroupPermissions()::contains)
+                        .collect(Collectors.toSet());
+
+                if (!alreadyAssignedResources.isEmpty()) {
+                    return new ResponseHttpDTO<>("400", "Algunos grupos de permisos ya están asignados al rol", null);
+                }
+
+                role.getGroupPermissions().addAll(resources);
+                roleGateway.save(role);
+
+                RoleDTO roleDTO = modelMapper.map(role, RoleDTO.class);
+
+                return new ResponseHttpDTO<>("200", "Grupos de permisos asignados correctamente al rol", roleDTO);
+            } catch (DataAccessException e) {
+                return new ResponseHttpDTO<>("500", "Error al acceder a la base de datos: " + e.getMessage(), null);
+            } catch (IllegalArgumentException e) {
+                return new ResponseHttpDTO<>("400", e.getMessage(), null);
+            } catch (Exception e) {
+                return new ResponseHttpDTO<>("500", "Ocurrió un error inesperado: " + e.getMessage(), null);
             }
-
-            ModuleComponent moduleComponent = moduleComponentGateway.findById(moduleComponentId)
-                    .orElseThrow(() -> new IllegalArgumentException("El componente del módulo no existe"));
-
-            groupPermission.setModuleComponent(moduleComponent);
-            groupPermissionGateway.save(groupPermission);
-
-            GroupPermissionDTO updatedGroupPermissionDTO = modelMapper.map(groupPermission, GroupPermissionDTO.class);
-
-            return new ResponseHttpDTO<>("200", "Componente asignado correctamente al grupo de permisos", updatedGroupPermissionDTO);
-
-        } catch (DataAccessException e) {
-            return new ResponseHttpDTO<>("500", "Error al acceder a la base de datos: " + e.getMessage(), null);
-        } catch (IllegalArgumentException e) {
-            return new ResponseHttpDTO<>("400", e.getMessage(), null);
-        } catch (Exception e) {
-            return new ResponseHttpDTO<>("500", "Ocurrió un error inesperado: " + e.getMessage(), null);
-        }
     }
 
+    public ResponseHttpDTO<RoleDTO> removeGroupPermissionToRole(AssignAndRemoveBodyDTO body) {
+            try {
+                Role role = roleGateway.findById(body.getIdContainer())
+                        .orElseThrow(() -> new IllegalArgumentException("El rol no existe"));
 
-    public ResponseHttpDTO<GroupPermissionDTO> removeComponentToGroupPermission(UUID groupPermissionId) {
-        try {
+                Set<GroupPermission> resourcesToRemove = body.getResourcesIds().stream()
+                        .map(id -> groupPermissionGateway.findById(id)
+                                .orElseThrow(() -> new IllegalArgumentException("El grupo de permisos con el ID " + id + " no existe")))
+                        .collect(Collectors.toSet());
 
-            GroupPermission groupPermission = groupPermissionGateway.findById(groupPermissionId)
-                    .orElseThrow(() -> new IllegalArgumentException("El grupo de permisos no existe"));
+                Set<GroupPermission> assignedResources = resourcesToRemove.stream()
+                        .filter(role.getGroupPermissions()::contains)
+                        .collect(Collectors.toSet());
 
-            groupPermission.setModuleComponent(null);
-            groupPermissionGateway.save(groupPermission);
+                if (assignedResources.isEmpty()) {
+                    return new ResponseHttpDTO<>("400", "Ninguno de los grupos de permisos especificados está asignado al rol", null);
+                }
 
-            GroupPermissionDTO updatedGroupPermissionDTO = modelMapper.map(groupPermission, GroupPermissionDTO.class);
+                role.getGroupPermissions().removeAll(assignedResources);
+                roleGateway.save(role);
 
-            return new ResponseHttpDTO<>("200", "Componente desvinculado del grupo de permisos correctamente", updatedGroupPermissionDTO);
+                RoleDTO roleDTO = modelMapper.map(role, RoleDTO.class);
 
-        } catch (DataAccessException e) {
-            return new ResponseHttpDTO<>("500", "Error al acceder a la base de datos: " + e.getMessage(), null);
-        } catch (IllegalArgumentException e) {
-            return new ResponseHttpDTO<>("400", e.getMessage(), null);
-        } catch (Exception e) {
-            return new ResponseHttpDTO<>("500", "Ocurrió un error inesperado: " + e.getMessage(), null);
-        }
-    }
-
-    public ResponseHttpDTO<RoleDTO> assignGroupPermissionRole(GroupAssignAndRemoveBodyRoleDTO body) {
-        return resourceAssignmentService.assignResource(body.getIdRole(), body.getGroupPermissionIds(), roleGateway, groupPermissionGateway, RoleDTO.class, "rol");
-    }
-
-    public ResponseHttpDTO<RoleDTO> removeGroupPermissionRole(GroupAssignAndRemoveBodyRoleDTO body) {
-        return resourceAssignmentService.removeResource(body.getIdRole(), body.getGroupPermissionIds(), roleGateway, groupPermissionGateway, RoleDTO.class, "rol");
+                return new ResponseHttpDTO<>("200", "Grupos de permisos eliminados correctamente del rol", roleDTO);
+            } catch (DataAccessException e) {
+                return new ResponseHttpDTO<>("500", "Error al acceder a la base de datos: " + e.getMessage(), null);
+            } catch (IllegalArgumentException e) {
+                return new ResponseHttpDTO<>("400", e.getMessage(), null);
+            } catch (Exception e) {
+                return new ResponseHttpDTO<>("500", "Ocurrió un error inesperado: " + e.getMessage(), null);
+            }
     }
 }
