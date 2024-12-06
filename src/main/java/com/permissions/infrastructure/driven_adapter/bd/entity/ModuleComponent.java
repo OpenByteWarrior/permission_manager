@@ -1,26 +1,30 @@
-
 package com.permissions.infrastructure.driven_adapter.bd.entity;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.Set;
 import java.util.UUID;
 
-import jakarta.persistence.*;
-import java.util.Set;
-import lombok.*;
-
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 
 @Entity
-public class Roles {
+public class ModuleComponent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, nullable = false, columnDefinition = "UUID")
     private UUID id;
+
     private String name;
     private String description;
 
-    @ManyToMany(mappedBy = "roles")
+    @OneToMany(mappedBy = "moduleComponent")
     private Set<GroupPermission> groupPermissions;
 }

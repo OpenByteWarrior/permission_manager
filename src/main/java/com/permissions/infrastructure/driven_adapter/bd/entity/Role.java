@@ -1,7 +1,10 @@
+
 package com.permissions.infrastructure.driven_adapter.bd.entity;
 
-import jakarta.persistence.*;
 import java.util.UUID;
+
+import com.permissions.domain.models.PermissionContainer;
+import jakarta.persistence.*;
 import java.util.Set;
 import lombok.*;
 
@@ -11,7 +14,7 @@ import lombok.*;
 @NoArgsConstructor
 
 @Entity
-public class Permission {
+public class Role implements PermissionContainer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,9 +23,14 @@ public class Permission {
     private String name;
     private String description;
 
-    @ManyToMany(mappedBy = "permissions")
+    @ManyToMany(mappedBy = "roles")
     private Set<GroupPermission> groupPermissions;
 
-    @ManyToMany(mappedBy = "permissions")
-    private Set<Role> roles;
+    @ManyToMany
+    @JoinTable(
+            name = "permissions_roles",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
+    private Set<Permission> permissions;
 }

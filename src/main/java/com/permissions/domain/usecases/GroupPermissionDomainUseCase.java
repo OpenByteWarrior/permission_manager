@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.permissions.domain.models.PermissionGateway;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataAccessException;
@@ -24,14 +25,14 @@ import com.permissions.infrastructure.driven_adapter.bd.repository.PermissionRep
 @RequiredArgsConstructor
 public class GroupPermissionDomainUseCase {
     private final GroupPermissionGateway groupPermissionGateway;
-    private final PermissionRepository permissionRepository;
+    private final PermissionGateway permissionGateway;
     private final ModelMapper modelMapper;
 
     public ResponseHttpDTO<GroupPermissionDTO> createGroupPermission(GroupPermissionBodyDTO groupPermissionBodyDTO) {
         try {
             Set<Permission> permissions = groupPermissionBodyDTO.getPermissionIds()
                     .stream()
-                    .map(permissionRepository::findById)
+                    .map(permissionGateway::findById)
                     .filter(Optional::isPresent)
                     .map(Optional::get).collect(Collectors.toSet());
 
@@ -75,7 +76,7 @@ public class GroupPermissionDomainUseCase {
                                 GroupPermissionDTO groupPermissionDTO = modelMapper.map(groupPermission, GroupPermissionDTO.class);
                                 return new ResponseHttpDTO<>("200", "Grupo de permisos obtenido correctamente", groupPermissionDTO);
                             })
-                    .orElseGet(() -> new ResponseHttpDTO<>("404", "El Grupo de permisos no existe", null));
+                    .orElseGet(() -> new ResponseHttpDTO<>("404", "El grupo de permisos no existe", null));
         } catch (DataAccessException e) {
             return new ResponseHttpDTO<>("500", "Error al obtener la informacion del grupo de permisos: " + e.getMessage(), null);
         } catch (Exception e) {
@@ -83,12 +84,12 @@ public class GroupPermissionDomainUseCase {
         }
     }
 
-    public ResponseHttpDTO<GroupPermission> deleteGroupPermissionById(UUID id) {
+    public ResponseHttpDTO<String> deleteGroupPermissionById(UUID id) {
         try {
             return groupPermissionGateway.findById(id).map(groupPermission -> {
                 groupPermissionGateway.deleteById(id);
-                return new ResponseHttpDTO<GroupPermission>("200", "Grupo de permisos eliminado correctamente", null);
-            }).orElseGet(() -> new ResponseHttpDTO<>("404", "El grupo de permisos no existe", null));
+                return new ResponseHttpDTO<>("200", "Grupo de permisos eliminado correctamente", "OK");
+            }).orElseGet(() -> new ResponseHttpDTO<>("404", "El grupo de permisos no existe", "NOT FOUND"));
         } catch (DataAccessException e) {
             return new ResponseHttpDTO<>("500", "Error al eliminar el grupo de permisos: " + e.getMessage(), null);
         } catch (Exception e) {
@@ -96,7 +97,7 @@ public class GroupPermissionDomainUseCase {
         }
     }
 
-    public ResponseHttpDTO<GroupPermissionDTO> updateGroupPermission(UUID id, GroupPermissionDTO groupPermissionDTO) {
+    public ResponseHttpDTO<GroupPermissionDTO> updateGroupPermissionById(UUID id, GroupPermissionDTO groupPermissionDTO) {
         try {
 
             return groupPermissionGateway.findById(id).map(
@@ -105,12 +106,12 @@ public class GroupPermissionDomainUseCase {
                         modelMapper.map(groupPermissionDTO, groupPermission);
                         GroupPermission updatedGroupPermission = groupPermissionGateway.save(groupPermission);
                         GroupPermissionDTO updatedGroupPermissionDTO = modelMapper.map(updatedGroupPermission, GroupPermissionDTO.class);
-                        return new ResponseHttpDTO<>("200", "Grupo de permiso actualizado correctamente", updatedGroupPermissionDTO);
+                        return new ResponseHttpDTO<>("200", "Grupo de permisos actualizado correctamente", updatedGroupPermissionDTO);
                     }
-            ).orElseGet(() -> new ResponseHttpDTO<>("404", "El permiso no existe", null));
+            ).orElseGet(() -> new ResponseHttpDTO<>("404", "El grupo de permisos no existe", null));
         } catch (DataAccessException e) {
             return new ResponseHttpDTO<>("500",
-                    "Error al actualizar la información del grupo de permiso: " + e.getMessage(), null);
+                    "Error al actualizar la información del grupo de permisos: " + e.getMessage(), null);
         } catch (Exception e) {
             return new ResponseHttpDTO<>("500",
                     "Ocurrió un error inesperado: " + e.getMessage(), null);

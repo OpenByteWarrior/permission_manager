@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface GroupPermissionGateway {
+public interface GroupPermissionGateway extends Gateway<GroupPermission> {
   GroupPermission save(GroupPermission groupPermission);
   List<GroupPermission> findAll();
   Optional<GroupPermission> findById(UUID id);

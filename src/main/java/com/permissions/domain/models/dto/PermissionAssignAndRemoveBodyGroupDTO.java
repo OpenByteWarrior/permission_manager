@@ -8,8 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class PermissionDTO {
-    private UUID id;
-    private String name;
-    private String description;
+public class PermissionAssignAndRemoveBodyGroupDTO {
+    private UUID idGroup;
+    private Set<UUID> permissionIds;
 }

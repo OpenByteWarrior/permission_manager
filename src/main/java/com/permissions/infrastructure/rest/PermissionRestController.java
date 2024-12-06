@@ -1,5 +1,7 @@
 package com.permissions.infrastructure.rest;
 
+import com.permissions.domain.models.dto.GroupPermissionDTO;
+import com.permissions.domain.models.dto.PermissionAssignAndRemoveBodyGroupDTO;
 import com.permissions.domain.models.dto.PermissionDTO;
 import com.permissions.domain.models.dto.ResponseHttpDTO;
 import com.permissions.domain.usecases.PermissionDomainUseCase;
@@ -36,12 +38,21 @@ public class PermissionRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseHttpDTO<Permission>> deletePermissionById(@PathVariable("id") UUID id) {
+    public ResponseEntity<ResponseHttpDTO<String>> deletePermissionById(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(permissionDomainUseCase.deletePermissionById(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseHttpDTO<PermissionDTO>> updatePermission(@PathVariable("id") UUID id, @RequestBody PermissionDTO permissionDTO) {
-        return new ResponseEntity<>(permissionDomainUseCase.updatePermission(id, permissionDTO), HttpStatus.OK);
+    public ResponseEntity<ResponseHttpDTO<PermissionDTO>> updatePermissionById(@PathVariable("id") UUID id, @RequestBody PermissionDTO permissionDTO) {
+        return new ResponseEntity<>(permissionDomainUseCase.updatePermissionById(id, permissionDTO), HttpStatus.OK);
+    }
+
+    @PutMapping("/assign")
+    public ResponseEntity<ResponseHttpDTO<GroupPermissionDTO>> assignPermissionGroup( @RequestBody PermissionAssignAndRemoveBodyGroupDTO body) {
+        return new ResponseEntity<>(permissionDomainUseCase.assignPermissionGroup(body), HttpStatus.OK);
+    }
+    @DeleteMapping("/remove")
+    public ResponseEntity<ResponseHttpDTO<GroupPermissionDTO>> removePermissionGroup( @RequestBody PermissionAssignAndRemoveBodyGroupDTO body) {
+        return new ResponseEntity<>(permissionDomainUseCase.removePermissionGroup(body), HttpStatus.OK);
     }
 }

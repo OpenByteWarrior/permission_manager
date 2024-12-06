@@ -39,14 +39,14 @@ public class GroupPermissionRestController {
     return new ResponseEntity<>(groupPermissionDomainUseCase.getGroupPermissionById(id), HttpStatus.OK);
   }
   @DeleteMapping("/{id}")
-  public ResponseEntity<ResponseHttpDTO<GroupPermission>> deleteGroupPermissionById(
+  public ResponseEntity<ResponseHttpDTO<String>> deleteGroupPermissionById(
       @PathVariable("id") UUID id) {
     return new ResponseEntity<>(groupPermissionDomainUseCase.deleteGroupPermissionById(id), HttpStatus.OK);
   }
   @PutMapping("/{id}")
-  public ResponseEntity<ResponseHttpDTO<GroupPermissionDTO>> updateGroupPermission(
+  public ResponseEntity<ResponseHttpDTO<GroupPermissionDTO>> updateGroupPermissionById(
       @PathVariable("id") UUID id, @RequestBody GroupPermissionDTO groupPermissionDTO) {
     return new ResponseEntity<>(
-        groupPermissionDomainUseCase.updateGroupPermission(id, groupPermissionDTO), HttpStatus.OK);
+        groupPermissionDomainUseCase.updateGroupPermissionById(id, groupPermissionDTO), HttpStatus.OK);
   }
 }

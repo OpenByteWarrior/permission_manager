@@ -8,8 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class RolDTO {
-    private UUID id;
-    private String name;
-    private List<GroupPermissionDTO> groupPermissions;
+public class PermissionAssignAndRemoveBodyRoleDTO {
+    private UUID idRole;
+    private Set<UUID> permissionIds;
 }

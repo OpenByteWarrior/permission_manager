@@ -8,8 +8,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class PermissionDTO {
+public class RoleDTO {
     private UUID id;
     private String name;
-    private String description;
+    private List<GroupPermissionDTO> groupPermissions;
+    private List<PermissionDTO> permissions;
 }
