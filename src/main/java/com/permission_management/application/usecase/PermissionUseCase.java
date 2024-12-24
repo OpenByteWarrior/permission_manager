@@ -1,7 +1,10 @@
 package com.permission_management.application.usecase;
 
+import com.permission_management.application.dto.common.GroupPermissionDTO;
+import com.permission_management.application.dto.common.PermissionDTO;
+import com.permission_management.application.dto.request.RequestAssignAndRemoveBodyDTO;
+import com.permission_management.application.dto.response.ResponseHttpDTO;
 import com.permission_management.domain.models.*;
-import com.permission_management.application.dto.*;
 import com.permission_management.infrastructure.persistence.entity.GroupPermission;
 import com.permission_management.infrastructure.persistence.entity.Permission;
 
@@ -18,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class PermissionDomainUseCase {
+public class PermissionUseCase {
     private final PermissionGateway permissionGateway;
     private final GroupPermissionGateway groupPermissionGateway;
     private final ModelMapper modelMapper;
@@ -97,7 +100,7 @@ public class PermissionDomainUseCase {
         }
     }
 
-    public ResponseHttpDTO<GroupPermissionDTO> assignPermissionToGroup(AssignAndRemoveBodyDTO body) {
+    public ResponseHttpDTO<GroupPermissionDTO> assignPermissionToGroup(RequestAssignAndRemoveBodyDTO body) {
         try {
             GroupPermission groupPermission = groupPermissionGateway.findById(body.getIdContainer())
                     .orElseThrow(() -> new IllegalArgumentException("El grupo de permisos no existe"));
@@ -130,7 +133,7 @@ public class PermissionDomainUseCase {
         }
     }
 
-    public ResponseHttpDTO<GroupPermissionDTO> removePermissionToGroup(AssignAndRemoveBodyDTO body) {
+    public ResponseHttpDTO<GroupPermissionDTO> removePermissionToGroup(RequestAssignAndRemoveBodyDTO body) {
         try {
             GroupPermission groupPermission = groupPermissionGateway.findById(body.getIdContainer())
                     .orElseThrow(() -> new IllegalArgumentException("El grupo de permisos no existe"));

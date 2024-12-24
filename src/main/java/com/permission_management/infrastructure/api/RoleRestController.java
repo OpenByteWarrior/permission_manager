@@ -1,9 +1,9 @@
-package com.permission_management.infrastructure.rest;
+package com.permission_management.infrastructure.api;
 
-import com.permission_management.application.dto.ResponseHttpDTO;
-import com.permission_management.application.dto.RoleBodyDTO;
-import com.permission_management.application.dto.RoleDTO;
-import com.permission_management.application.usecase.RoleDomainUseCase;
+import com.permission_management.application.dto.response.ResponseHttpDTO;
+import com.permission_management.application.dto.request.RequestRoleBodyDTO;
+import com.permission_management.application.dto.common.RoleDTO;
+import com.permission_management.application.usecase.RoleUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +16,10 @@ import java.util.UUID;
 @RequestMapping("/roles")
 @RequiredArgsConstructor
 public class RoleRestController {
-    private final RoleDomainUseCase roleDomainUseCase;
+    private final RoleUseCase roleDomainUseCase;
 
     @PostMapping
-    public ResponseEntity<ResponseHttpDTO<RoleDTO>> createRole(@RequestBody RoleBodyDTO role) {
+    public ResponseEntity<ResponseHttpDTO<RoleDTO>> createRole(@RequestBody RequestRoleBodyDTO role) {
         return new ResponseEntity<>(
                 roleDomainUseCase.createRole(role), HttpStatus.CREATED);
     }

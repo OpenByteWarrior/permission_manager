@@ -1,10 +1,12 @@
-package com.permission_management.infrastructure.persistence.repository;
+package com.permission_management.infrastructure.persistence.adapter;
 
 import com.permission_management.infrastructure.persistence.entity.Permission;
 import com.permission_management.domain.models.PermissionGateway;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import com.permission_management.infrastructure.persistence.repository.PermissionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

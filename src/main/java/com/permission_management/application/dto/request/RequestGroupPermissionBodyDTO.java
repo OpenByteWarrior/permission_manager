@@ -1,4 +1,4 @@
-package com.permission_management.application.dto;
+package com.permission_management.application.dto.request;
 
 import java.util.*;
 import lombok.*;
@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class GroupPermissionBodyDTO {
+public class RequestGroupPermissionBodyDTO {
     private UUID id;
     private String name;
     private String description;

@@ -1,4 +1,4 @@
-package com.permission_management.application.dto;
+package com.permission_management.application.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

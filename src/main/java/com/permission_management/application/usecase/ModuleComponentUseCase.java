@@ -1,11 +1,11 @@
 package com.permission_management.application.usecase;
 
 
-import com.permission_management.application.dto.AssignAndRemoveBodyDTO;
-import com.permission_management.application.dto.GroupPermissionDTO;
+import com.permission_management.application.dto.request.RequestAssignAndRemoveBodyDTO;
+import com.permission_management.application.dto.common.GroupPermissionDTO;
 import com.permission_management.domain.models.*;
-import com.permission_management.application.dto.ModuleComponentDTO;
-import com.permission_management.application.dto.ResponseHttpDTO;
+import com.permission_management.application.dto.common.ModuleComponentDTO;
+import com.permission_management.application.dto.response.ResponseHttpDTO;
 import com.permission_management.infrastructure.persistence.entity.GroupPermission;
 import com.permission_management.infrastructure.persistence.entity.ModuleComponent;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ModuleComponentDomainUseCase {
+public class ModuleComponentUseCase {
     private final ModuleComponentGateway moduleComponentGateway;
     private final GroupPermissionGateway groupPermissionGateway;
     private final ModelMapper modelMapper;
@@ -105,7 +105,7 @@ public class ModuleComponentDomainUseCase {
         }
     }
 
-    public ResponseHttpDTO<GroupPermissionDTO> assignComponentToGroup(AssignAndRemoveBodyDTO body) {
+    public ResponseHttpDTO<GroupPermissionDTO> assignComponentToGroup(RequestAssignAndRemoveBodyDTO body) {
         try {
             GroupPermission groupPermission = groupPermissionGateway.findById(body.getIdContainer())
                     .orElseThrow(() -> new IllegalArgumentException("El grupo de permisos no existe"));
@@ -138,7 +138,7 @@ public class ModuleComponentDomainUseCase {
         }
     }
 
-    public ResponseHttpDTO<GroupPermissionDTO> removeComponentToGroup(AssignAndRemoveBodyDTO body) {
+    public ResponseHttpDTO<GroupPermissionDTO> removeComponentToGroup(RequestAssignAndRemoveBodyDTO body) {
         try {
             GroupPermission groupPermission = groupPermissionGateway.findById(body.getIdContainer())
                     .orElseThrow(() -> new IllegalArgumentException("El grupo de permisos no existe"));

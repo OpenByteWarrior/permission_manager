@@ -1,8 +1,9 @@
-package com.permission_management.infrastructure.persistence.repository;
+package com.permission_management.infrastructure.persistence.adapter;
 
 
 import com.permission_management.domain.models.ModuleComponentGateway;
 import com.permission_management.infrastructure.persistence.entity.ModuleComponent;
+import com.permission_management.infrastructure.persistence.repository.ModuleComponentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
