@@ -1,7 +1,8 @@
-package com.permission_management.infrastructure.persistence.repository;
+package com.permission_management.infrastructure.persistence.adapter;
 
 import com.permission_management.domain.models.RoleGateway;
 import com.permission_management.infrastructure.persistence.entity.Role;
+import com.permission_management.infrastructure.persistence.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

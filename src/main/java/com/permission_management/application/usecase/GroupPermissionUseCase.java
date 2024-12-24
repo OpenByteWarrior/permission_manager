@@ -1,6 +1,10 @@
 package com.permission_management.application.usecase;
 
-import com.permission_management.application.dto.*;
+import com.permission_management.application.dto.common.GroupPermissionDTO;
+import com.permission_management.application.dto.common.RoleDTO;
+import com.permission_management.application.dto.request.RequestAssignAndRemoveBodyDTO;
+import com.permission_management.application.dto.request.RequestGroupPermissionBodyDTO;
+import com.permission_management.application.dto.response.ResponseHttpDTO;
 import com.permission_management.domain.models.GroupPermissionGateway;
 
 import java.util.List;
@@ -22,13 +26,13 @@ import com.permission_management.infrastructure.persistence.entity.Permission;
 
 @Service
 @RequiredArgsConstructor
-public class GroupPermissionDomainUseCase {
+public class GroupPermissionUseCase {
     private final GroupPermissionGateway groupPermissionGateway;
     private final PermissionGateway permissionGateway;
     private final RoleGateway roleGateway;
     private final ModelMapper modelMapper;
 
-    public ResponseHttpDTO<GroupPermissionDTO> createGroupPermission(GroupPermissionBodyDTO groupPermissionBodyDTO) {
+    public ResponseHttpDTO<GroupPermissionDTO> createGroupPermission(RequestGroupPermissionBodyDTO groupPermissionBodyDTO) {
         try {
             Set<Permission> permissions = groupPermissionBodyDTO.getPermissionIds()
                     .stream()
@@ -118,7 +122,7 @@ public class GroupPermissionDomainUseCase {
         }
     }
 
-    public ResponseHttpDTO<RoleDTO> assignGroupPermissionToRole(AssignAndRemoveBodyDTO body) {
+    public ResponseHttpDTO<RoleDTO> assignGroupPermissionToRole(RequestAssignAndRemoveBodyDTO body) {
             try {
                 Role role = roleGateway.findById(body.getIdContainer())
                         .orElseThrow(() -> new IllegalArgumentException("El rol no existe"));
@@ -151,7 +155,7 @@ public class GroupPermissionDomainUseCase {
             }
     }
 
-    public ResponseHttpDTO<RoleDTO> removeGroupPermissionToRole(AssignAndRemoveBodyDTO body) {
+    public ResponseHttpDTO<RoleDTO> removeGroupPermissionToRole(RequestAssignAndRemoveBodyDTO body) {
             try {
                 Role role = roleGateway.findById(body.getIdContainer())
                         .orElseThrow(() -> new IllegalArgumentException("El rol no existe"));

@@ -1,6 +1,8 @@
 package com.permission_management.application.usecase;
 
-import com.permission_management.application.dto.*;
+import com.permission_management.application.dto.common.RoleDTO;
+import com.permission_management.application.dto.request.RequestRoleBodyDTO;
+import com.permission_management.application.dto.response.ResponseHttpDTO;
 import com.permission_management.domain.models.GroupPermissionGateway;
 import com.permission_management.domain.models.RoleGateway;
 import com.permission_management.infrastructure.persistence.entity.GroupPermission;
@@ -18,13 +20,13 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class RoleDomainUseCase {
+public class RoleUseCase {
 
     private final RoleGateway roleGateway;
     private final GroupPermissionGateway groupPermissionGateway;
     private final ModelMapper modelMapper;
 
-    public ResponseHttpDTO<RoleDTO> createRole(RoleBodyDTO roleBodyDTO) {
+    public ResponseHttpDTO<RoleDTO> createRole(RequestRoleBodyDTO roleBodyDTO) {
         try {
             Set<GroupPermission> groupPermissions = roleBodyDTO.getGroupPermissionIDs()
                     .stream()

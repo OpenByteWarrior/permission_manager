@@ -1,4 +1,4 @@
-package com.permission_management.infrastructure.persistence.repository;
+package com.permission_management.infrastructure.persistence.adapter;
 
 import com.permission_management.infrastructure.persistence.entity.GroupPermission;
 import com.permission_management.domain.models.GroupPermissionGateway;
@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.permission_management.infrastructure.persistence.repository.GroupPermissionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

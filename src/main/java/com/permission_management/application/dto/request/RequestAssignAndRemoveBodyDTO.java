@@ -1,4 +1,4 @@
-package com.permission_management.application.dto;
+package com.permission_management.application.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,10 +12,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class RoleBodyDTO {
-    UUID id;
-    String name;
-    String description;
-    Set<UUID> groupPermissionIDs;
+public class RequestAssignAndRemoveBodyDTO {
+    private UUID idContainer;
+    private Set<UUID> resourcesIds;
 }

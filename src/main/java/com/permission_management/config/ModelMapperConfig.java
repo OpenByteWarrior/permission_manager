@@ -1,4 +1,4 @@
-package com.permission_management.utils.config;
+package com.permission_management.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

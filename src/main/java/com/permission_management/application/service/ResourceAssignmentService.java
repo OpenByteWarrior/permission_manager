@@ -3,7 +3,7 @@ package com.permission_management.application.service;
 import com.permission_management.domain.models.Gateway;
 import com.permission_management.domain.models.Resource;
 import com.permission_management.domain.models.ResourceContainer;
-import com.permission_management.application.dto.ResponseHttpDTO;
+import com.permission_management.application.dto.response.ResponseHttpDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;

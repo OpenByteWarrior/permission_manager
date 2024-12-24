@@ -1,7 +1,11 @@
-package com.permission_management.infrastructure.rest;
+package com.permission_management.infrastructure.api;
 
-import com.permission_management.application.dto.*;
-import com.permission_management.application.usecase.GroupPermissionDomainUseCase;
+import com.permission_management.application.dto.common.GroupPermissionDTO;
+import com.permission_management.application.dto.common.RoleDTO;
+import com.permission_management.application.dto.request.RequestAssignAndRemoveBodyDTO;
+import com.permission_management.application.dto.request.RequestGroupPermissionBodyDTO;
+import com.permission_management.application.dto.response.ResponseHttpDTO;
+import com.permission_management.application.usecase.GroupPermissionUseCase;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,11 +19,11 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class GroupPermissionRestController {
 
-  private final GroupPermissionDomainUseCase groupPermissionDomainUseCase;
+  private final GroupPermissionUseCase groupPermissionDomainUseCase;
 
   @PostMapping
   public ResponseEntity<ResponseHttpDTO<GroupPermissionDTO>> createGroupPermission(
-      @RequestBody GroupPermissionBodyDTO groupPermissionBodyDTO) {
+      @RequestBody RequestGroupPermissionBodyDTO groupPermissionBodyDTO) {
     return new ResponseEntity<>(
         groupPermissionDomainUseCase.createGroupPermission(groupPermissionBodyDTO), HttpStatus.CREATED);
   }
@@ -46,11 +50,11 @@ public class GroupPermissionRestController {
         groupPermissionDomainUseCase.updateGroupPermissionById(id, groupPermissionDTO), HttpStatus.OK);
   }
   @PutMapping("/assign")
-  public ResponseEntity<ResponseHttpDTO<RoleDTO>> assignGroupPermissionToRole(@RequestBody AssignAndRemoveBodyDTO body) {
+  public ResponseEntity<ResponseHttpDTO<RoleDTO>> assignGroupPermissionToRole(@RequestBody RequestAssignAndRemoveBodyDTO body) {
     return new ResponseEntity<>(groupPermissionDomainUseCase.assignGroupPermissionToRole(body), HttpStatus.OK);
   }
   @DeleteMapping("/remove")
-  public ResponseEntity<ResponseHttpDTO<RoleDTO>> removeGroupPermissionToRole( @RequestBody AssignAndRemoveBodyDTO body) {
+  public ResponseEntity<ResponseHttpDTO<RoleDTO>> removeGroupPermissionToRole( @RequestBody RequestAssignAndRemoveBodyDTO body) {
     return new ResponseEntity<>(groupPermissionDomainUseCase.removeGroupPermissionToRole(body), HttpStatus.OK);
   }
 }

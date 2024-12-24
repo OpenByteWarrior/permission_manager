@@ -1,10 +1,10 @@
-package com.permission_management.infrastructure.rest;
+package com.permission_management.infrastructure.api;
 
-import com.permission_management.application.dto.AssignAndRemoveBodyDTO;
-import com.permission_management.application.dto.GroupPermissionDTO;
-import com.permission_management.application.dto.ModuleComponentDTO;
-import com.permission_management.application.dto.ResponseHttpDTO;
-import com.permission_management.application.usecase.ModuleComponentDomainUseCase;
+import com.permission_management.application.dto.request.RequestAssignAndRemoveBodyDTO;
+import com.permission_management.application.dto.common.GroupPermissionDTO;
+import com.permission_management.application.dto.common.ModuleComponentDTO;
+import com.permission_management.application.dto.response.ResponseHttpDTO;
+import com.permission_management.application.usecase.ModuleComponentUseCase;
 import com.permission_management.infrastructure.persistence.entity.ModuleComponent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ import java.util.UUID;
 @RequestMapping("/components")
 @RequiredArgsConstructor
 public class ModuleComponentRestController {
-    private final ModuleComponentDomainUseCase moduleComponentDomainUseCase;
+    private final ModuleComponentUseCase moduleComponentDomainUseCase;
 
     @PostMapping
     public ResponseEntity<ResponseHttpDTO<ModuleComponentDTO>> createComponent(@RequestBody ModuleComponent component) {
@@ -45,11 +45,11 @@ public class ModuleComponentRestController {
         return new ResponseEntity<>(moduleComponentDomainUseCase.updateComponentById(id, moduleComponentDTO), HttpStatus.OK);
     }
     @PutMapping("/assign")
-    public ResponseEntity<ResponseHttpDTO<GroupPermissionDTO>> assignComponentToGroup(@RequestBody AssignAndRemoveBodyDTO body) {
+    public ResponseEntity<ResponseHttpDTO<GroupPermissionDTO>> assignComponentToGroup(@RequestBody RequestAssignAndRemoveBodyDTO body) {
         return new ResponseEntity<>(moduleComponentDomainUseCase.assignComponentToGroup(body), HttpStatus.OK);
     }
     @DeleteMapping("/remove")
-    public ResponseEntity<ResponseHttpDTO<GroupPermissionDTO>> removeComponentToGroup( @RequestBody AssignAndRemoveBodyDTO body) {
+    public ResponseEntity<ResponseHttpDTO<GroupPermissionDTO>> removeComponentToGroup( @RequestBody RequestAssignAndRemoveBodyDTO body) {
         return new ResponseEntity<>(moduleComponentDomainUseCase.removeComponentToGroup(body), HttpStatus.OK);
     }
 }

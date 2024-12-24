@@ -1,5 +1,7 @@
-package com.permission_management.application.dto;
+package com.permission_management.application.dto.common;
+
 import java.util.*;
+
 import lombok.*;
 
 @Getter
@@ -7,8 +9,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class PermissionDTO {
+public class RoleDTO {
     private UUID id;
     private String name;
-    private String description;
+    private List<GroupPermissionDTO> groupPermissions;
 }
