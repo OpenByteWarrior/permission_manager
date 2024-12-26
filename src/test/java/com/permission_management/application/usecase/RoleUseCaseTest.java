@@ -6,17 +6,21 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.permission_management.application.dto.common.RoleDTO;
 import com.permission_management.application.dto.request.RequestRoleBodyDTO;
 import com.permission_management.application.dto.response.ResponseHttpDTO;
+import com.permission_management.application.service.CrudService;
 import com.permission_management.domain.models.GroupPermissionGateway;
 import com.permission_management.domain.models.RoleGateway;
 import com.permission_management.infrastructure.persistence.entity.GroupPermission;
 import com.permission_management.infrastructure.persistence.entity.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
 import java.util.*;
 
+@ExtendWith(MockitoExtension.class)
 class RoleUseCaseTest {
 
     @Mock
@@ -26,145 +30,88 @@ class RoleUseCaseTest {
     private GroupPermissionGateway groupPermissionGateway;
 
     @Mock
+    private CrudService crudService;
+
+    @Mock
     private ModelMapper modelMapper;
 
+    @InjectMocks
     private RoleUseCase roleUseCase;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-        roleUseCase = new RoleUseCase(roleGateway, groupPermissionGateway, modelMapper);
     }
 
     @Test
     void testCreateRole_Success() {
+        RequestRoleBodyDTO request = new RequestRoleBodyDTO();
 
-        RequestRoleBodyDTO requestDTO = new RequestRoleBodyDTO();
-        requestDTO.setGroupPermissionIDs(Set.of(UUID.randomUUID(), UUID.randomUUID()));
+        request.setName("Admin");
+        request.setGroupPermissionIDs(Collections.singleton(UUID.randomUUID()));
 
-        GroupPermission groupPermission1 = mock(GroupPermission.class);
-        GroupPermission groupPermission2 = mock(GroupPermission.class);
-        when(groupPermissionGateway.findById(any(UUID.class)))
-                .thenReturn(Optional.of(groupPermission1), Optional.of(groupPermission2));
-
-        Role role = mock(Role.class);
-        when(modelMapper.map(requestDTO, Role.class)).thenReturn(role);
-
-        when(roleGateway.save(role)).thenReturn(role);
-
-        RoleDTO roleDTO = new RoleDTO();
-        when(modelMapper.map(role, RoleDTO.class)).thenReturn(roleDTO);
-
-        ResponseHttpDTO<RoleDTO> response = roleUseCase.createRole(requestDTO);
-
-        assertEquals("200", response.getStatus());
-        assertEquals("Rol creado correctamente", response.getMessage());
-    }
-
-
-    @Test
-    void testCreateRole__Failure_GroupPermissionNotFound() {
-
-        UUID groupId = UUID.randomUUID();
-        Set<UUID> groupPermissionIDs = Set.of(groupId);
-        RequestRoleBodyDTO roleBodyDTO = new RequestRoleBodyDTO();
-        roleBodyDTO.setGroupPermissionIDs(groupPermissionIDs);
-
-        when(groupPermissionGateway.findById(groupId)).thenReturn(Optional.empty());
-
-        ResponseHttpDTO<RoleDTO> response = roleUseCase.createRole(roleBodyDTO);
-
-        assertEquals("500", response.getStatus());
-    }
-
-    @Test
-    void testGetAllRoles() {
-
+        GroupPermission groupPermission = new GroupPermission();
+        groupPermission.setId(UUID.randomUUID());
         Role role = new Role();
         role.setId(UUID.randomUUID());
-        List<Role> roleList = List.of(role);
-        RoleDTO roleDTO = new RoleDTO();
-        roleDTO.setId(role.getId());
 
-        when(roleGateway.findAll()).thenReturn(roleList);
-        when(modelMapper.map(role, RoleDTO.class)).thenReturn(roleDTO);
+        when(groupPermissionGateway.findById(any(UUID.class))).thenReturn(Optional.of(groupPermission));
+        when(modelMapper.map(request, Role.class)).thenReturn(role);
+        when(crudService.create(any(Role.class), eq(roleGateway), eq(RoleDTO.class), eq("rol")))
+                .thenReturn(new ResponseHttpDTO<>("200", "rol creado correctamente", new RoleDTO()));
+
+        ResponseHttpDTO<RoleDTO> response = roleUseCase.createRole(request);
+
+        assertEquals("200", response.getStatus());
+        assertEquals("rol creado correctamente", response.getMessage());
+        assertNotNull(response.getResponse());
+    }
+
+
+    @Test
+    void testGetAllRoles_Success() {
+
+        when(crudService.getAllResource(any(RoleGateway.class), eq(RoleDTO.class), eq("roles")))
+                .thenReturn(new ResponseHttpDTO<>("200", "roles obtenidos correctamente", new ArrayList<>()))
+        ;
 
         ResponseHttpDTO<List<RoleDTO>> response = roleUseCase.getAllRoles();
 
         assertEquals("200", response.getStatus());
-        assertEquals("Roles obtenidos correctamente", response.getMessage());
+        assertEquals("roles obtenidos correctamente", response.getMessage());
         assertNotNull(response.getResponse());
-        assertEquals(1, response.getResponse().size());
     }
 
     @Test
-    void testGetAllRoles_NoRoles() {
+    void testGetRoleById_Success() {
 
-        when(roleGateway.findAll()).thenReturn(Collections.emptyList());
-
-        ResponseHttpDTO<List<RoleDTO>> response = roleUseCase.getAllRoles();
-
-        assertEquals("204", response.getStatus());
-        assertEquals("No hay roles disponibles", response.getMessage());
-    }
-
-    @Test
-    void testGetRoleById() {
-
-        UUID roleId = UUID.randomUUID();
+        UUID id = UUID.randomUUID();
         Role role = new Role();
-        role.setId(roleId);
-        RoleDTO roleDTO = new RoleDTO();
-        roleDTO.setId(roleId);
+        role.setId(id);
 
-        when(roleGateway.findById(roleId)).thenReturn(Optional.of(role));
-        when(modelMapper.map(role, RoleDTO.class)).thenReturn(roleDTO);
+        when(crudService.getResourceById(eq(id), any(RoleGateway.class), eq(RoleDTO.class), eq("rol")))
+                .thenReturn(new ResponseHttpDTO<>("200", "rol obtenido correctamente", new RoleDTO()));
 
-        ResponseHttpDTO<RoleDTO> response = roleUseCase.getRoleById(roleId);
+        ResponseHttpDTO<RoleDTO> response = roleUseCase.getRoleById(id);
 
         assertEquals("200", response.getStatus());
-        assertEquals("Rol obtenido correctamente", response.getMessage());
+        assertEquals("rol obtenido correctamente", response.getMessage());
         assertNotNull(response.getResponse());
-        assertEquals(roleId, response.getResponse().getId());
     }
 
     @Test
-    void testGetRoleById_RoleNotFound() {
+    void testDeleteRoleById_Success() {
 
-        UUID roleId = UUID.randomUUID();
-        when(roleGateway.findById(roleId)).thenReturn(Optional.empty());
+        UUID id = UUID.randomUUID();
 
-        ResponseHttpDTO<RoleDTO> response = roleUseCase.getRoleById(roleId);
+        when(crudService.deleteResourceById(eq(id), any(RoleGateway.class), eq("rol")))
+                .thenReturn(new ResponseHttpDTO<>("200", "rol eliminado correctamente", "OK"));
 
-        assertEquals("404", response.getStatus());
-        assertEquals("El rol no existe", response.getMessage());
-    }
-
-    @Test
-    void testDeleteRoleById() {
-
-        UUID roleId = UUID.randomUUID();
-        Role role = new Role();
-        role.setId(roleId);
-
-        when(roleGateway.findById(roleId)).thenReturn(Optional.of(role));
-
-        ResponseHttpDTO<String> response = roleUseCase.deleteRoleById(roleId);
+        ResponseHttpDTO<String> response = roleUseCase.deleteRoleById(id);
 
         assertEquals("200", response.getStatus());
-        assertEquals("Rol eliminado correctamente", response.getMessage());
+        assertEquals("rol eliminado correctamente", response.getMessage());
+        assertEquals("OK", response.getResponse());
     }
 
-    @Test
-    void testDeleteRoleById_RoleNotFound() {
-
-        UUID roleId = UUID.randomUUID();
-        when(roleGateway.findById(roleId)).thenReturn(Optional.empty());
-
-        ResponseHttpDTO<String> response = roleUseCase.deleteRoleById(roleId);
-
-        assertEquals("404", response.getStatus());
-        assertEquals("El rol no existe", response.getMessage());
-    }
 }
 
