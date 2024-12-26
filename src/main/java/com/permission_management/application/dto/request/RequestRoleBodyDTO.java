@@ -14,8 +14,8 @@ import java.util.UUID;
 @NoArgsConstructor
 
 public class RequestRoleBodyDTO {
-    UUID id;
-    String name;
-    String description;
-    Set<UUID> groupPermissionIDs;
+    private UUID id;
+    private String name;
+    private String description;
+    private Set<UUID> groupPermissionIDs;
 }

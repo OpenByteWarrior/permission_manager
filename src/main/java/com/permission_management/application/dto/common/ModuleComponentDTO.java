@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ModuleComponentDTO {
-    UUID id;
-    String name;
-    String description;
+    private UUID id;
+    private String name;
+    private String description;
 }
