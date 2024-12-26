@@ -10,7 +10,6 @@ import com.permission_management.infrastructure.persistence.entity.GroupPermissi
 import com.permission_management.infrastructure.persistence.entity.Role;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

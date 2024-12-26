@@ -19,7 +19,7 @@ public class CrudService {
         try {
             K objectSave = gateway.save(entity);
             T objectDTO = modelMapper.map(objectSave, targetClass);
-            return new ResponseHttpDTO<>("200", nameResource + "creado correctamente", objectDTO);
+            return new ResponseHttpDTO<>("200", nameResource + " creado correctamente", objectDTO);
         } catch (DataAccessException e) {
             return new ResponseHttpDTO<>("500", "Error al guardar el " + nameResource + ":" + e.getMessage(), null);
         } catch (Exception e) {
