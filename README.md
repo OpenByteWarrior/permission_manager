@@ -21,12 +21,16 @@ siguiendo una arquitectura limpia y modular para garantizar flexibilidad y escal
 1. **Gestión de Permisos**
    
   - 🛠️ CRUD de permisos individuales.
+  - 🛠️ CRUD de grupo de permisos individuales.
   - 📋 Gestión de grupos de permisos (creación, asignación, y eliminación).
 
 2. **Gestión de Roles**
-
-   - 🛠️ CRUD de roles individuales.
-  - 📋 Gestión de grupos de permisos (creación, asignación, y eliminación).
+  - 🛠️ CRUD de roles individuales.
+  - 📋 Gestión de roles (creación, asignación, y eliminación).
+    
+3. **Gestión Componentes**
+  - 🛠️ CRUD de roles individuales. 
+  - 📋 Gestión de componentes (creación, asignación, y eliminación).
 
 ---
 
@@ -196,7 +200,39 @@ El proyecto sigue una arquitectura **hexagonal**:
 
 ## 📋 Endpoints Principales
 
-### 📋 Descargar Configuración Insomnia
+### 🖧 Gestión de Permisos
+
+- **POST** `/api/permissions`: Crear un nuevo permiso.
+- **GET** `/api/permissions`: Obtener todos los permisos.
+- **GET** `/api/permissions/{id}` Obtener permiso por id.
+- **PUT** `/api/permissions/{id}`: Actualizar un permiso existente.
+- **DELETE** `/api/permissions/{id}`: Eliminar un permiso.
+
+### 🖧 Gestión de Grupos de Permisos
+
+- **POST** `/api/group_permissions`: Crear un grupo de permisos.
+- **GET** `/api/group_permissions`: Obtener todos los grupos de permisos.
+- **GET** `/api/group_permissions/{id}`: Obtener grupo de permisos por id.
+- **PUT** `/api/group_permissions/{id}`: Actualizar un grupo de permisos.
+- **DELETE** `/api/group_permissions/{id}`: Eliminar un grupo de permisos.
+
+### 🖧 Gestión de Roles
+
+- **POST** `/api/roles`: Crear un rol.
+- **GET** `/api/roles`: Obtener todos los roles.
+- **GET** `/api/roles/{id}`: Obtener rol por id.
+- **PUT** `/api/roles/{id}`: Actualizar un rol.
+- **DELETE** `/api/roles/{id}`: Eliminar un rol.
+-   
+### 🖧 Gestión de Componentes
+
+- **POST** `/api/components`: Crear un componente.
+- **GET** `/api/components`: Obtener todos los componentes.
+- **GET** `/api/components/{id}`: Obtener componente por id.
+- **PUT** `/api/components/{id}`: Actualizar un componente.
+- **DELETE** `/api/components/{id}`: Eliminar un componente.  
+
+### ⬇️ Descargar Configuración Insomnia
 
 Si utilizas [Insomnia](https://insomnia.rest/) para probar los endpoints de este microservicio, puedes importar la colección preconfigurada con los siguientes pasos:
 
@@ -215,38 +251,6 @@ Si utilizas [Insomnia](https://insomnia.rest/) para probar los endpoints de este
 3. **Explorar y probar los endpoints**  
    Una vez importado, verás la colección con los endpoints disponibles para este microservicio. Puedes empezar a probar los diferentes métodos HTTP (GET, POST, PUT, DELETE) directamente desde Insomnia.
    
-### 📋 Gestión de Permisos
-
-- **POST** `/api/permissions`: Crear un nuevo permiso.
-- **GET** `/api/permissions`: Obtener todos los permisos.
-- **GET** `/api/permissions/{id}` Obtener permiso por id.
-- **PUT** `/api/permissions/{id}`: Actualizar un permiso existente.
-- **DELETE** `/api/permissions/{id}`: Eliminar un permiso.
-
-### 👥 Gestión de Grupos de Permisos
-
-- **POST** `/api/group_permissions`: Crear un grupo de permisos.
-- **GET** `/api/group_permissions`: Obtener todos los grupos de permisos.
-- **GET** `/api/group_permissions/{id}`: Obtener grupo de permisos por id.
-- **PUT** `/api/group_permissions/{id}`: Actualizar un grupo de permisos.
-- **DELETE** `/api/group_permissions/{id}`: Eliminar un grupo de permisos.
-
-### 👥 Gestión de Roles
-
-- **POST** `/api/roles`: Crear un rol.
-- **GET** `/api/roles`: Obtener todos los roles.
-- **GET** `/api/roles/{id}`: Obtener rol por id.
-- **PUT** `/api/roles/{id}`: Actualizar un rol.
-- **DELETE** `/api/roles/{id}`: Eliminar un rol.
--   
-### 👥 Gestión de Componentes
-
-- **POST** `/api/components`: Crear un componente.
-- **GET** `/api/components`: Obtener todos los componentes.
-- **GET** `/api/components/{id}`: Obtener componente por id.
-- **PUT** `/api/components/{id}`: Actualizar un componente.
-- **DELETE** `/api/components/{id}`: Eliminar un componente.  
-
 ---
 
 ## 🧪 Tests
