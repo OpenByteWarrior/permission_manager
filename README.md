@@ -127,7 +127,7 @@ El proyecto sigue una arquitectura **hexagonal**:
     - *`common`*: Contiene DTOs comunes que se comparten entre múltiples funcionalidades.
     - *`request`*: Contiene DTOs específicos para las solicitudes realizadas hacia el microservicio.
     - *`response`*: Contiene DTOs específicos para las respuestas enviadas desde el microservicio.
-  - *`service`*: Contiene servicios auxiliares que no forman parte directa de la lógica de negocio, pero son esenciales para la operación del microservicio (e.g., generación de tokens JWT, validaciones básicas, etc.).
+  - *`service`*: Contiene servicios auxiliares que no forman parte directa de la lógica de negocio, pero son esenciales para la operación del microservicio.
   - *`usecase`*: Contiene la lógica de negocio que define y ejecuta las acciones centrales del dominio del microservicio.
 
 - **`infrastructure`**:
@@ -198,7 +198,7 @@ El proyecto sigue una arquitectura **hexagonal**:
 
 ### 📋 Descargar Configuración Insomnia
 
-  [`insomnia.json`](./docs/Insomnia.json)
+  [`insomnia.json`](./src/main/java/com/permission_management/insomnia.json)
 
 ### 📋 Gestión de Permisos
 
