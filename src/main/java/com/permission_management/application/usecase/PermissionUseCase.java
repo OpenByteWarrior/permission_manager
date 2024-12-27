@@ -4,6 +4,7 @@ import com.permission_management.application.dto.common.GroupPermissionDTO;
 import com.permission_management.application.dto.common.PermissionDTO;
 import com.permission_management.application.dto.request.RequestAssignAndRemoveBodyDTO;
 import com.permission_management.application.dto.response.ResponseHttpDTO;
+import com.permission_management.application.service.CrudService;
 import com.permission_management.domain.models.*;
 import com.permission_management.infrastructure.persistence.entity.GroupPermission;
 import com.permission_management.infrastructure.persistence.entity.Permission;
@@ -24,80 +25,27 @@ import java.util.stream.Collectors;
 public class PermissionUseCase {
     private final PermissionGateway permissionGateway;
     private final GroupPermissionGateway groupPermissionGateway;
+    private final CrudService crudService;
     private final ModelMapper modelMapper;
 
     public ResponseHttpDTO<PermissionDTO> createPermission(Permission permission) {
-        try {
-            Permission savedPermission = permissionGateway.save(permission);
-            PermissionDTO permissionDTO = modelMapper.map(savedPermission, PermissionDTO.class);
-            return new ResponseHttpDTO<>("200", "Permiso creado correctamente", permissionDTO);
-
-        } catch (DataAccessException e) {
-            return new ResponseHttpDTO<>("500", "Error al guardar el permiso: " + e.getMessage(), null);
-        } catch (Exception e) {
-            return new ResponseHttpDTO<>("500", "Ocurrió un error inesperado: " + e.getMessage(), null);
-        }
+        return crudService.create(permission, permissionGateway,PermissionDTO.class, "permiso");
     }
 
     public ResponseHttpDTO<List<PermissionDTO>> getAllPermissions() {
-        try {
-            List<PermissionDTO> AllPermissions = permissionGateway.findAll().stream().map(permission -> modelMapper.map(permission, PermissionDTO.class)).toList();
-
-            if (AllPermissions.isEmpty()) {
-                return new ResponseHttpDTO<>("204", "No hay permisos disponibles", null);
-            }
-            return new ResponseHttpDTO<>("200", "Permisos obtenidos correctamente", AllPermissions);
-        } catch (DataAccessException e) {
-            return new ResponseHttpDTO<>("500", "Error al obtener los permisos: " + e.getMessage(), null);
-
-        } catch (Exception e) {
-            return new ResponseHttpDTO<>("500", "Ocurrió un error inesperado: " + e.getMessage(), null);
-        }
+        return crudService.getAllResource(permissionGateway, PermissionDTO.class, "permisos");
     }
 
     public ResponseHttpDTO<PermissionDTO> getPermissionById(UUID id) {
-
-        try {
-            return permissionGateway.findById(id).map(permission -> {
-                PermissionDTO permissionDTO = modelMapper.map(permission, PermissionDTO.class);
-                return new ResponseHttpDTO<>("200", "Permiso obtenido correctamente", permissionDTO);
-            }).orElseGet(() -> new ResponseHttpDTO<>("404", "El permiso no existe", null));
-        } catch (DataAccessException e) {
-            return new ResponseHttpDTO<>("500", "Error al obtener la informacion del permiso: " + e.getMessage(), null);
-        } catch (Exception e) {
-            return new ResponseHttpDTO<>("500", "Ocurrió un error inesperado: " + e.getMessage(), null);
-        }
-
+        return crudService.getResourceById(id, permissionGateway, PermissionDTO.class, "permiso");
     }
 
     public ResponseHttpDTO<String> deletePermissionById(UUID id) {
-        try {
-            return permissionGateway.findById(id).map(permission -> {
-                permissionGateway.deleteById(id);
-                return new ResponseHttpDTO<>("200", "Permiso eliminado correctamente", "OK");
-            }).orElseGet(() -> new ResponseHttpDTO<>("404", "El permiso no existe", "NOT FOUND"));
-        } catch (DataAccessException e) {
-            return new ResponseHttpDTO<>("500", "Error al eliminar el permiso: " + e.getMessage(), null);
-        } catch (Exception e) {
-            return new ResponseHttpDTO<>("500", "Ocurrió un error inesperado: " + e.getMessage(), null);
-        }
+        return crudService.deleteResourceById(id, permissionGateway, "permiso");
     }
 
     public ResponseHttpDTO<PermissionDTO> updatePermissionById(UUID id, PermissionDTO permissionDTO) {
-        try {
-            return permissionGateway.findById(id).map(existingPermission -> {
-                modelMapper.getConfiguration().setSkipNullEnabled(true);
-                modelMapper.map(permissionDTO, existingPermission);
-                Permission updatedPermission = permissionGateway.save(existingPermission);
-                PermissionDTO updatedPermissionDTO = modelMapper.map(updatedPermission, PermissionDTO.class);
-
-                return new ResponseHttpDTO<>("200", "Permiso actualizado correctamente", updatedPermissionDTO);
-            }).orElseGet(() -> new ResponseHttpDTO<>("404", "El permiso no existe", null));
-        } catch (DataAccessException e) {
-            return new ResponseHttpDTO<>("500", "Error al actualizar la información del permiso: " + e.getMessage(), null);
-        } catch (Exception e) {
-            return new ResponseHttpDTO<>("500", "Ocurrió un error inesperado: " + e.getMessage(), null);
-        }
+        return crudService.updateResourceById(id, permissionDTO, permissionGateway, PermissionDTO.class, "permiso");
     }
 
     public ResponseHttpDTO<GroupPermissionDTO> assignPermissionToGroup(RequestAssignAndRemoveBodyDTO body) {
