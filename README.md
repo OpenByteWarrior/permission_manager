@@ -198,8 +198,23 @@ El proyecto sigue una arquitectura **hexagonal**:
 
 ### 📋 Descargar Configuración Insomnia
 
-  [`insomnia.json`](./src/main/java/com/permission_management/insomnia.json)
+Si utilizas [Insomnia](https://insomnia.rest/) para probar los endpoints de este microservicio, puedes importar la colección preconfigurada con los siguientes pasos:
 
+1. **Descargar archivo de configuración**  
+   Puedes descargar la configuración predefinida de Insomnia desde el siguiente enlace:  
+   [`insomnia.json`](./src/main/java/com/permission_management/docs/Insomnia.json)
+
+2. **Importar en Insomnia**  
+   Para importar el archivo en Insomnia, sigue estos pasos:
+   - Abre Insomnia.
+   - Haz clic en el ícono de **Aplicación** (tres líneas horizontales) en la esquina superior izquierda.
+   - Selecciona **Import/Export**.
+   - Haz clic en **Import Data**.
+   - Elige **From File** y selecciona el archivo `insomnia.json` descargado.
+
+3. **Explorar y probar los endpoints**  
+   Una vez importado, verás la colección con los endpoints disponibles para este microservicio. Puedes empezar a probar los diferentes métodos HTTP (GET, POST, PUT, DELETE) directamente desde Insomnia.
+   
 ### 📋 Gestión de Permisos
 
 - **POST** `/api/permissions`: Crear un nuevo permiso.
